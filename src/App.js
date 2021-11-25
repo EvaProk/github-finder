@@ -2,14 +2,30 @@ import "./App.css";
 import React, { Component } from "react";
 import Navbar from "./components/layout/Navbar";
 import Users from "./components/users/Users";
+import axios from "axios";
 
 class App extends Component {
+   state = {
+     users: [],
+     loading: false
+  }
+
+  componentDidMount(){
+    this.setState({loading: true});
+    axios.get('https://api.github.com/users')
+    .then(res => 
+    this.setState({ users: res.data , loading: false }))
+
+  };
+  // console.log(state);
+
+
   render() {
     return (
       <div className="App">
         <Navbar />
         <div className="container">
-          <Users />
+          <Users loading = {this.state.loading} users = {this.state.users}/>
         </div>
       </div>
     );
