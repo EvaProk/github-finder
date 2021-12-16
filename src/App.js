@@ -1,9 +1,13 @@
 import "./App.css";
-import React, { Component } from "react";
+import React, { Fragment, Component } from "react";
 import Navbar from "./components/layout/Navbar";
 import Alert from "./components/layout/Alert";
+import About from "./components/pages/About";
 import Users from "./components/users/Users";
+
 import Search from "./components/users/Search";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 import axios from "axios";
 
 class App extends Component {
@@ -31,9 +35,9 @@ class App extends Component {
       .then((res) => this.setState({ users: res.data.items, loading: false }));
   };
 
-  //clear user search results 
+  //clear user search results
   clearUsers = () => this.setState({ users: [], loading: false });
-// Set alerts if there is no input
+  // Set alerts if there is no input
   setAlert = (msg, type) => {
     this.setState({ alert: { msg: msg, type: type } });
 
@@ -46,19 +50,34 @@ class App extends Component {
     const { users, loading } = this.state;
 
     return (
-      <div className="App">
-        <Navbar />
-        <div className="container">
-          <Alert alert={this.state.alert} />
-          <Search
-            searchUsers={this.searchUsers}
-            clearUsers={this.clearUsers}
-            showClear={users.length > 0 ? true : false}
-            setAlert={this.setAlert}
-          />
-          <Users loading={loading} users={users} />
+      <Router>
+        <div className="App">
+          <Navbar />
+          <div className="container">
+            <Alert alert={this.state.alert} />
+            <Routes>
+              <Route
+                exact
+                path="/"
+                element={
+                  <Fragment>
+                    <Search
+                      searchUsers={this.searchUsers}
+                      clearUsers={this.clearUsers}
+                      showClear={users.length > 0 ? true : false}
+                      setAlert={this.setAlert}
+                    />
+                    <Users loading={loading} users={users} />
+                  </Fragment>
+                }/>
+                <Route
+                exact
+                path="/about"
+                element={<About/>}/>
+            </Routes>
+          </div>
         </div>
-      </div>
+      </Router>
     );
   }
 }
