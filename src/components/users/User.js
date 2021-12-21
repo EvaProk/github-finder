@@ -1,10 +1,11 @@
 import React, { Fragment, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { Link } from "react-router-dom";
+import Repos from "../repos/Repos"
 
 
 
-function User({ user, loading, getUser, getUserRepos }) {
+function User({ user, loading, repos, getUser, getUserRepos }) {
   const params = useParams()
   const {
     name,
@@ -76,6 +77,7 @@ function User({ user, loading, getUser, getUserRepos }) {
       </Fragment>}
 
     </div>
+    <Repos repos={repos}/>
 
 
   </Fragment>
