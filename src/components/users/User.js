@@ -2,11 +2,18 @@ import React, { Fragment, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { Link } from "react-router-dom";
 import Repos from "../repos/Repos"
-
-
+import Spinner from "../layout/Spinner.js";
 
 function User({ user, loading, repos, getUser, getUserRepos }) {
+
   const params = useParams()
+
+  useEffect(() => {
+    getUser(params.login)
+    getUserRepos(params.login)
+    //eslint-disable-next-line
+  }, []);
+
   const {
     name,
     avatar_url,
@@ -21,12 +28,9 @@ function User({ user, loading, repos, getUser, getUserRepos }) {
     public_repos,
     piublic_gists,
     hireable,
-  } = user
-
-  useEffect(() => {
-    getUser(params.login)
-    getUserRepos(params.login)
-  }, [])
+  } = user;
+  
+  if (loading) return <Spinner />;
 
   return <Fragment>
     <Link to="/" className="btn btn-light">Back to search</Link>
@@ -75,11 +79,8 @@ function User({ user, loading, repos, getUser, getUserRepos }) {
       {piublic_gists && <Fragment>
         <div className="badge badge-dark"> Public Gists: {piublic_gists}</div>
       </Fragment>}
-
     </div>
-    <Repos repos={repos}/>
-
-
+    <Repos repos={repos} />
   </Fragment>
 }
 
