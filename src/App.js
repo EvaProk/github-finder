@@ -8,6 +8,7 @@ import User from "./components/users/User";
 import Search from "./components/users/Search";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import axios from "axios";
+import GitHubState from "./context/github/GitHubState"
 
 const App = () => {
   const [users, setUsers] = useState([]);
@@ -67,12 +68,13 @@ const App = () => {
       setAlert(null)
     }, 4000);
   };
-  
+
   const renderUsers = props =>  <User {...props}  getUser={getUser} user={user} loading={loading} />;
 
     // const { users, user, repos, loading } = this.state;
 
     return (
+      <GitHubState> 
       <Router>
         <div className="App">
           <Navbar />
@@ -105,6 +107,7 @@ const App = () => {
           </div>
         </div>
       </Router>
+      </GitHubState>
     );
   
 }
