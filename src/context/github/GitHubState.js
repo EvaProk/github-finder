@@ -1,6 +1,6 @@
 import { useReducer } from 'react'
 import axios from "axios" 
-import GitHubContest from "./gitHubContest"
+import GitHubContest from "./gitHubContext"
 import GitHubReducer from "./gitHubReducer"
 import {
 SEARCH_USERS,
@@ -21,6 +21,20 @@ const GitHubState = props => {
   const [state, dispatch ] = useReducer(GitHubReducer, initialState);
 
   //Search users 
+  const searchUsers = (text) => {
+    setLoading();
+   
+    axios
+      .get(
+        `https://api.github.com/search/users?q=${text}&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
+      )
+      .then((res) => {
+        dispatch({
+          type: SEARCH_USERS,
+          payload: res.data.items
+        })
+      });
+  };
 
   //Get user 
 
@@ -29,13 +43,15 @@ const GitHubState = props => {
   // Clear Users 
 
   //Set Loading 
+  const setLoading = () => dispatch({SET_LOADING});
 
   return <GitHubContest.Provider
   value ={{
     user: state.user,
     users: state.users,
     repos: state.repos, 
-    loading: state.loading
+    loading: state.loading,
+    searchUsers
   }}
   >
     {props.children}
