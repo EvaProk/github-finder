@@ -6,8 +6,8 @@ import Spinner from "../layout/Spinner.js";
 import GitHubContext from "../../context/github/gitHubContext"
 
 
-function User({  repos, getUserRepos }) {
-  const { loading, user, getUser, } = useContext(GitHubContext);
+function User({ }) {
+  const { loading, user, getUser, repos, getUserRepos  } = useContext(GitHubContext);
 
 
   const params = useParams()
