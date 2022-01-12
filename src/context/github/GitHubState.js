@@ -94,4 +94,4 @@ const GitHubState = props => {
   </GitHubContest.Provider>
 }
 
-export default GitHubState
+export default GitHubState;
