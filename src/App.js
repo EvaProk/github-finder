@@ -11,37 +11,11 @@ import axios from "axios";
 import GitHubState from "./context/github/GitHubState"
 
 const App = () => {
-  const [users, setUsers] = useState([]);
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(false);
   const [alert, setAlert] = useState(null);
   const [repos, setRepos] = useState([]);
 
-  //search GitHub users
-  const searchUsers = (text) => {
-    setLoading(true);
-   
-    axios
-      .get(
-        `https://api.github.com/search/users?q=${text}&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
-      )
-      .then((res) => {
-        setUsers(res.data.items)
-        setLoading(false)
-      });
-  };
-  // Get a selected GitHub user
-  const getUser = (username) => {
-    setLoading(true);
-    axios
-      .get(
-        `https://api.github.com/users/${username}?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
-      )
-      .then((res) => {
-        setUser(res.data)
-        setLoading(false)
-      });
-  };
   //Get users github users 
   const getUserRepos = (username) => {
     setLoading(true);
@@ -54,11 +28,7 @@ const App = () => {
         setLoading(false)
       });
   };
-  //clear user search results
-  const clearUsers = () => {
-    setUsers([])
-    setLoading(false)
-  };
+  
 
   // Set alerts if there is no input
   const getAlert = (msg, type) => {
@@ -69,9 +39,7 @@ const App = () => {
     }, 4000);
   };
 
-  const renderUsers = props =>  <User {...props}  getUser={getUser} user={user} loading={loading} />;
-
-    // const { users, user, repos, loading } = this.state;
+  // const renderUsers = props =>  <User {...props}  getUser={getUser} user={user} loading={loading} />;
 
     return (
       <GitHubState> 
@@ -87,12 +55,9 @@ const App = () => {
                 element={
                   <Fragment>
                     <Search
-                      searchUsers={searchUsers}
-                      clearUsers={clearUsers}
-                      showClear={users.length > 0 ? true : false}
                       setAlert={getAlert}
                     />
-                    <Users loading={loading} users={users} />
+                    <Users  />
                   </Fragment>
                 }
               />
@@ -100,7 +65,7 @@ const App = () => {
               <Route
                 path='user/:login'
                 element={
-                  <User getUser={getUser} getUserRepos={getUserRepos} repos={repos}  user={user} loading={loading} />
+                  <User  getUserRepos={getUserRepos} repos={repos}  loading={loading} />
                 }
               />
             </Routes>
